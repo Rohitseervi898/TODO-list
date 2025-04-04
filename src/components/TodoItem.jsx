@@ -1,30 +1,38 @@
-import React from 'react'
-import { useState } from 'react'
+import React from "react";
+import { useState } from "react";
+
+const TodoItem = ({ todo, deletetodo, updatetodo,ToggleCompleted }) => {
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTask, setNewTask] = useState(todo.task);
 
 
-const list=()=>{
-    const [ischecked,setIscheck]=useState(false);
-    const [todos,setTodos]=useState([]);
-    todolist.forEach(Element=>{
-        <div>
-            {todolist.map((element)=>(
-              <div>
-                <input type='checkbox' checked={ischecked} onChange={setIscheck(element.target.checked)} />
-                <span>{element.task}</span>
-              </div>  
-            ))
-            }
-        </div>
-    }
-    )
-}
-const TodoItem = () => {
-    
+  const handleupdate = () => {
+    updatetodo(todo.id, newTask);
+    setIsEditing(false);
+  };
+
+
   return (
-    <div>
+    <div >
+        <input type="checkbox" onClick={()=>ToggleCompleted(todo.id)}/>
         
-    </div>
-  )
-}
+        {isEditing ? (
+          <input
+            type="text"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+          />
+        ) : (
+          <span style={todo.completed?{textDecoration:'line-through'}:{}}>{todo.task}</span>
+        )}
 
-export default TodoItem
+      {isEditing ? (<button onClick={handleupdate}>Save</button>) : (<button onClick={() => setIsEditing(true)}>Edit</button>)}
+
+      <button onClick={()=>deletetodo(todo.id)}>delete</button>
+    
+    </div>
+  );
+};
+
+export default TodoItem;
